@@ -64,7 +64,32 @@ void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::Tra
 
 void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
+    if(!in)
+        return;
 
+    //get Quaternion
+    float* ox = new float(.0);
+    float* oy = new float(.0);
+    float* oz = new float(.0);
+    float* ow = new float(.0);
+
+    in->GetQuaternion(ox,oy,oz,ow);
+
+    out.transform.rotation.x = (double)(*ox);
+    out.transform.rotation.y = (double)(*oy);
+    out.transform.rotation.z = (double)(*oz);
+    out.transform.rotation.w = (double)(*ow);
+
+    //get vec
+    float* x = new float(.0);
+    float* y = new float(.0);
+    float* z = new float(.0);
+
+    in->GetPosition(x, y, z);
+
+    out.transform.translation.x = (double)(*x);
+    out.transform.translation.y = (double)(*y);
+    out.transform.translation.z = (double)(*z);
 
 }
 
