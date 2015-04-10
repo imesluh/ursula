@@ -17,7 +17,7 @@ int main(int argc, char **argv)
    */
   ros::NodeHandle n;
 
-  ros2oigtl::Ros2OIGTLBridge<geometry_msgs::Quaternion> bridge;
+  ros2oigtl::Ros2OIGTLBridge<geometry_msgs::Quaternion> bridge(std::string("/mypose"));
 
 
   return 0;

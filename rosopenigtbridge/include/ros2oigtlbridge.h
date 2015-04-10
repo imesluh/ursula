@@ -4,6 +4,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <ros/ros.h>
 
+#include <string>
 
 namespace ros2oigtl
 {
@@ -14,18 +15,18 @@ class Ros2OIGTLBridge
 {
     
 public:
-    Ros2OIGTLBridge<T>();
+    Ros2OIGTLBridge<T>(std::string topicName);
     ~Ros2OIGTLBridge<T>();
 
-
+    void SetTopic(std::string topic);
     
 private:
 
 
-    //void GenericCallback(const T &msg);
-    
-    ros::Subscriber sub;
-       
+    void GenericCallback(const T &msg);
+    ros::NodeHandle mNodeHandle;
+    ros::Subscriber mSubscriber;
+    std::string      mTopicName;
     
 };
 
