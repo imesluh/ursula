@@ -120,6 +120,7 @@ add_executable(ros2openigtlink src/ros2openigtlink.cpp include/ros2oigtlbridge.h
 ## Specify libraries to link a library or executable target against
  target_link_libraries(ros2openigtlink
    ${catkin_LIBRARIES}
+    OpenIGTLink
 )
 
 #############
