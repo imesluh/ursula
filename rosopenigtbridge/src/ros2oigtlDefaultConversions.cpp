@@ -95,6 +95,25 @@ void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::Transfo
 
 void TransformToQTrans(geometry_msgs::TransformStamped &in, igtl::PositionMessage::Pointer out)
 {
+    out = igtl::PositionMessage::New();
+
+    //ToDo
+    out->SetDeviceName("SomeRosDevice");
+
+    float position[3];
+    float quaternion[4];
+
+    position[0] = (float)in.transform.translation.x;
+    position[1] = (float)in.transform.translation.y;
+    position[2] = (float)in.transform.translation.z;
+
+    quaternion[0] = (float)in.transform.rotation.x;
+    quaternion[1] = (float)in.transform.rotation.y;
+    quaternion[2] = (float)in.transform.rotation.z;
+    quaternion[3] = (float)in.transform.rotation.w;
+
+    out->SetPosition(position);
+    out->SetQuaternion(quaternion);
 
 
 }
