@@ -53,10 +53,11 @@ int main(int argc, char **argv)
     ros::NodeHandle n;
 
     ros::Subscriber sub = n.subscribe(topicName, 100, transformCallback);
-    ros::AsyncSpinner spinner(1);
 
-   spinner.start();
-   ros::waitForShutdown();
+
+    ros::spin();
 
     return 0;
 }
+
+

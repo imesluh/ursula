@@ -5,12 +5,12 @@
 #include "ros2oigtlDefaultConversions.h"
 
 
-void transformCallback(const geometry_msgs::TransformStamped::ConstPtr& msg)
+void meshCallback(const shape_msgs::Mesh::ConstPtr& msg)
 {
     ros::NodeHandle nLocal;
 
-    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
-    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg );
+    igtl::PolyDataMessage::Pointer oigtlPolydataMsg = igtl::PolyDataMessage::New();
+    ros2oigtl::MeshToMesh(msg, oigtlPolydataMsg );
 
 
     ROS_INFO("Recieved Transformatipon");
@@ -33,9 +33,9 @@ void transformCallback(const geometry_msgs::TransformStamped::ConstPtr& msg)
         ROS_ERROR("Can't connect to OpenIGT Port.");
     }
 
-    oigtlPositionMsg->Pack();
+    oigtlPolydataMsg->Pack();
 
-    socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+    socket->Send(oigtlPolydataMsg->GetPackPointer(), oigtlPolydataMsg->GetPackSize());
 
 }
 
@@ -49,14 +49,14 @@ int main(int argc, char **argv)
     }
 
     std::string topicName = argv[1];
-    ros::init(argc, argv, "ros2oigtlPose");
+    ros::init(argc, argv, "ros2oigtlMesh");
     ros::NodeHandle n;
 
-    ros::Subscriber sub = n.subscribe(topicName, 100, transformCallback);
-    ros::AsyncSpinner spinner(1);
+    ros::Subscriber sub = n.subscribe(topicName, 100, meshCallback);
 
-   spinner.start();
-   ros::waitForShutdown();
+
+    ros::spin();
 
     return 0;
 }
+

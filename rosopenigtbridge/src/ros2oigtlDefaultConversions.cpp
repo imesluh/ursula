@@ -168,8 +168,9 @@ void ros2oigtl::MeshToMesh(const shape_msgs::Mesh::ConstPtr &in, igtl::PolyDataM
 {
 
     //Setup Header *shape_msgs::Mesh has no header*
-
-
     //TODO
     out->SetDeviceName("SomeRosDevice");
+
+
+   // in->vertices
 }
