@@ -10,7 +10,7 @@ template<typename T>
 Ros2OIGTLBridge<T>::Ros2OIGTLBridge(std::string topicName)
 {
     mTopicName = topicName;
-    mSubscriber = mNodeHandle.subscribe<T>(mTopicName, 100, Ros2OIGTLBridge<T>::GenericCallback,this);
+  //  mSubscriber = mNodeHandle.subscribe<T>(mTopicName, 100, Ros2OIGTLBridge<T>::GenericCallback,this);
 
 
 }

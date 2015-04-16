@@ -1,6 +1,8 @@
 
 #include "ros2oigtlDefaultConversions.h"
 
+using namespace ros2oigtl;
+
 void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMessage::Pointer out, double scaling = 1)
 {
     //We need to transform geometrymsg (Quaternion+CenterPoint) to a 4x4-Matrix
@@ -115,5 +117,26 @@ void TransformToQTrans(geometry_msgs::TransformStamped &in, igtl::PositionMessag
     out->SetPosition(position);
     out->SetQuaternion(quaternion);
 
+
+}
+
+void ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out)
+{
+
+}
+
+void ImageToImage(sensor_msgs::Image& in,igtl::ImageMessage::Pointer out)
+{
+
+}
+
+void MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out)
+{
+
+
+}
+
+void MeshToMesh(shape_msgs::Mesh &in, igtl::PolyDataMessage::Pointer out)
+{
 
 }
