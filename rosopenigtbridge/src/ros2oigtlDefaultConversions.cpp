@@ -101,7 +101,7 @@ void ros2oigtl::QTransToTransform(igtl::PositionMessage::Pointer in, geometry_ms
 
 void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out)
 {
-    out = igtl::PositionMessage::New();
+  //   out = igtl::PositionMessage::New();
 
     float position[3];
     float quaternion[4];
