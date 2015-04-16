@@ -19,22 +19,22 @@ namespace ros2oigtl
 
 
 //Transformations
-void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMessage::Pointer out, double scaling = 1);
+void TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, double scaling = 1.);
 void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out);
 
 //Pose & Quaternions
 
 void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out);
-void TransformToQTrans(geometry_msgs::TransformStamped &in, igtl::PositionMessage::Pointer out);
+void TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out);
 
 //Images ToDo
 
 void ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out);
-void ImageToImage(sensor_msgs::Image& in,igtl::ImageMessage::Pointer out);
+void ImageToImage(const sensor_msgs::Image::ConstPtr& in,igtl::ImageMessage::Pointer out);
 
 //polydata
 void MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out);
-void MeshToMesh(shape_msgs::Mesh &in, igtl::PolyDataMessage::Pointer out);
+void MeshToMesh(const shape_msgs::Mesh::ConstPtr &in, igtl::PolyDataMessage::Pointer out);
 
 }
 

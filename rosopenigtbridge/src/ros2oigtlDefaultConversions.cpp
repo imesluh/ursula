@@ -1,9 +1,9 @@
 
 #include "ros2oigtlDefaultConversions.h"
 
-using namespace ros2oigtl;
 
-void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMessage::Pointer out, double scaling = 1)
+
+void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, double scaling)
 {
     //We need to transform geometrymsg (Quaternion+CenterPoint) to a 4x4-Matrix
 
@@ -11,8 +11,8 @@ void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMe
     igtl::Matrix4x4 m;
 
     //Get data
-    geometry_msgs::Quaternion q = in.transform.rotation;
-    geometry_msgs::Vector3 center = in.transform.translation;
+    geometry_msgs::Quaternion q = in->transform.rotation;
+    geometry_msgs::Vector3 center = in->transform.translation;
 
     //Now transform
     double sqw = q.w*q.w;
@@ -54,7 +54,7 @@ void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMe
 
     //Setup Header
     igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
-    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    stamp->SetTime((double)(in->header.stamp.toNSec()));
     out->SetTimeStamp(stamp);
     //TODO
     out->SetDeviceName("SomeRosDevice");
@@ -62,13 +62,13 @@ void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMe
 
 }
 
-void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out)
+void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
 
 
 }
 
-void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out)
+void ros2oigtl::QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
     if(!in)
         return;
@@ -99,38 +99,35 @@ void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::Transfo
 
 }
 
-void TransformToQTrans(geometry_msgs::TransformStamped &in, igtl::PositionMessage::Pointer out)
+void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out)
 {
     out = igtl::PositionMessage::New();
-
-    //ToDo
-    out->SetDeviceName("SomeRosDevice");
 
     float position[3];
     float quaternion[4];
 
-    position[0] = (float)in.transform.translation.x;
-    position[1] = (float)in.transform.translation.y;
-    position[2] = (float)in.transform.translation.z;
+    position[0] = (float)in->transform.translation.x;
+    position[1] = (float)in->transform.translation.y;
+    position[2] = (float)in->transform.translation.z;
 
-    quaternion[0] = (float)in.transform.rotation.x;
-    quaternion[1] = (float)in.transform.rotation.y;
-    quaternion[2] = (float)in.transform.rotation.z;
-    quaternion[3] = (float)in.transform.rotation.w;
+    quaternion[0] = (float)in->transform.rotation.x;
+    quaternion[1] = (float)in->transform.rotation.y;
+    quaternion[2] = (float)in->transform.rotation.z;
+    quaternion[3] = (float)in->transform.rotation.w;
 
     out->SetPosition(position);
     out->SetQuaternion(quaternion);
 
     //Setup Header
     igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
-    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    stamp->SetTime((double)(in->header.stamp.toNSec()));
     out->SetTimeStamp(stamp);
     //TODO
     out->SetDeviceName("SomeRosDevice");
 
 }
 
-void ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out)
+void ros2oigtl::ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out)
 {
     if(!in)
         return;
@@ -139,35 +136,35 @@ void ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out)
 
     in->GetDimensions(width, height, depth);
 
+    //check for 2d
     if(depth >1)
         return;
-
 
     out.width = width;
     out.height = height;
 
-//    out.Type =
+
 
 }
 
-void ImageToImage(sensor_msgs::Image& in,igtl::ImageMessage::Pointer out)
+void ros2oigtl::ImageToImage(const sensor_msgs::Image::ConstPtr& in,igtl::ImageMessage::Pointer out)
 {
 
     //Setup Header
     igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
-    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    stamp->SetTime((double)(in->header.stamp.toNSec()));
     out->SetTimeStamp(stamp);
     //TODO
     out->SetDeviceName("SomeRosDevice");
 }
 
-void MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out)
+void ros2oigtl::MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out)
 {
 
 
 }
 
-void MeshToMesh(shape_msgs::Mesh &in, igtl::PolyDataMessage::Pointer out)
+void ros2oigtl::MeshToMesh(const shape_msgs::Mesh::ConstPtr &in, igtl::PolyDataMessage::Pointer out)
 {
 
     //Setup Header *shape_msgs::Mesh has no header*
