@@ -51,9 +51,13 @@ void TransformToTransform(geometry_msgs::TransformStamped &in, igtl::TransformMe
 
     out->SetMatrix(m);
 
+
+    //Setup Header
+    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    out->SetTimeStamp(stamp);
     //TODO
     out->SetDeviceName("SomeRosDevice");
-
 
 
 }
@@ -117,17 +121,44 @@ void TransformToQTrans(geometry_msgs::TransformStamped &in, igtl::PositionMessag
     out->SetPosition(position);
     out->SetQuaternion(quaternion);
 
+    //Setup Header
+    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    out->SetTimeStamp(stamp);
+    //TODO
+    out->SetDeviceName("SomeRosDevice");
 
 }
 
 void ImageToImage(igtl::ImageMessage::Pointer in, sensor_msgs::Image &out)
 {
+    if(!in)
+        return;
+
+    int width, height, depth;
+
+    in->GetDimensions(width, height, depth);
+
+    if(depth >1)
+        return;
+
+
+    out.width = width;
+    out.height = height;
+
+//    out.Type =
 
 }
 
 void ImageToImage(sensor_msgs::Image& in,igtl::ImageMessage::Pointer out)
 {
 
+    //Setup Header
+    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    out->SetTimeStamp(stamp);
+    //TODO
+    out->SetDeviceName("SomeRosDevice");
 }
 
 void MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out)
@@ -139,4 +170,9 @@ void MeshToMesh(igtl::PolyDataMessage::Pointer in, shape_msgs::Mesh &out)
 void MeshToMesh(shape_msgs::Mesh &in, igtl::PolyDataMessage::Pointer out)
 {
 
+    //Setup Header *shape_msgs::Mesh has no header*
+
+
+    //TODO
+    out->SetDeviceName("SomeRosDevice");
 }
