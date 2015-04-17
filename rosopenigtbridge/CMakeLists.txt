@@ -111,10 +111,10 @@ include_directories(
 # )
 
 ## Declare a cpp executable
-add_executable(ros2openigtlink src/ros2openigtlink.cpp include/ros2oigtlbridge.h src/ros2oigtlbridge.hxx include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
-add_executable(ros2oigtlPose src/ros2oigtlPose.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
-add_executable(ros2oigtlImage src/ros2oigtlImage.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
-add_executable(ros2oigtlMesh src/ros2oigtlMesh.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(ros2openigtlink src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2openigtlink.cpp include/ros2oigtlbridge.h src/ros2oigtlbridge.hxx include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(ros2oigtlPose src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlPose.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(ros2oigtlImage src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlImage.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(ros2oigtlMesh src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlMesh.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes

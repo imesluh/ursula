@@ -3,28 +3,33 @@
 #include "igtlOSUtil.h"
 #include "igtlClientSocket.h"
 #include "ros2oigtlDefaultConversions.h"
+#include "ros2oigtlGenericConverter.h"
+//
 
-
-void transformCallback(const geometry_msgs::TransformStamped::ConstPtr& msg)
+class PoseConverter : public ros2oigtl::GenericConverter
 {
-    ros::NodeHandle nLocal;
+public:
+    PoseConverter(std::string topicName);
+    ~PoseConverter();
 
-    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
-    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg );
+protected:
 
+    void Callback(const geometry_msgs::TransformStamped::ConstPtr& msg);
 
-    ROS_INFO("Recieved Transformatipon");
-    //send message
-    igtl::ClientSocket::Pointer socket;
-    socket = igtl::ClientSocket::New();
+};
+
+PoseConverter::PoseConverter(std::string topicName)
+{
+
+    mSub = mn.subscribe(topicName, 100, &PoseConverter::Callback,  this);
+    mSocket = igtl::ClientSocket::New();
     std::string server;
-    nLocal.getParam("OpenIGTLinkServerIP", server);
+    mn.getParam("OpenIGTLinkServerIP", server);
     int r;
     if(server.empty())
-        r = socket->ConnectToServer("127.0.0.1", 18944);
+        r = mSocket->ConnectToServer("127.0.0.1", 18944);
     else
-        r = socket->ConnectToServer(server.c_str(), 18944);
-
+        r = mSocket->ConnectToServer(server.c_str(), 18944);
     if (r != 0)
     {
         //
@@ -33,11 +38,25 @@ void transformCallback(const geometry_msgs::TransformStamped::ConstPtr& msg)
         ROS_ERROR("Can't connect to OpenIGT Port.");
     }
 
-    oigtlPositionMsg->Pack();
+}
 
-    socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+PoseConverter::~PoseConverter()
+{
+    mSocket->CloseSocket();
 
 }
+
+void PoseConverter::Callback(const geometry_msgs::TransformStamped::ConstPtr& msg)
+{
+    ROS_INFO("Recieved Transformatipon");
+    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
+    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg );
+    oigtlPositionMsg->Pack();
+    mSocket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+
+}
+
+
 
 int main(int argc, char **argv)
 {
@@ -46,13 +65,11 @@ int main(int argc, char **argv)
         // If not correct, print usage
         std::cerr << "Usage: " << argv[0] << " <TopicName>"    << std::endl;
         exit(0);
+
     }
-
-    std::string topicName = argv[1];
     ros::init(argc, argv, "ros2oigtlPose");
-    ros::NodeHandle n;
-
-    ros::Subscriber sub = n.subscribe(topicName, 100, transformCallback);
+    std::string topicName = argv[1];
+    PoseConverter pc(topicName);
     ros::AsyncSpinner spinner(1);
 
    spinner.start();
