@@ -64,8 +64,40 @@ void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::Cons
 
 void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
+    //Get data
+    geometry_msgs::Quaternion q = out.transform.rotation;
 
 
+    igtl::Matrix4x4 m;
+    in->GetMatrix(m);
+//    tf::Vector3 origin;
+//    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
+
+
+    tf::Matrix3x3 tf3d;
+    tf3d.setValue(static_cast<double>(m[0][0]), static_cast<double>(m[0][1]), static_cast<double>(m[0][2]),
+                  static_cast<double>(m[1][0]), static_cast<double>(m[1][1]), static_cast<double>(m[1][2]),
+                  static_cast<double>(m[2][0]), static_cast<double>(m[2][1]), static_cast<double>(m[2][2]));
+
+    tf::Quaternion tfqt;
+    tf3d.getRotation(tfqt);
+
+    out.transform.translation.x = m[0][3];
+    out.transform.translation.y = m[1][3];
+    out.transform.translation.z = m[2][3];
+
+    out.transform.rotation.x = tfqt.getX();
+    out.transform.rotation.y = tfqt.getY();
+    out.transform.rotation.z = tfqt.getZ();
+    out.transform.rotation.w = tfqt.getW();
+
+    //Setup Header
+
+    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+    in->GetTimeStamp(stamp);
+
+    unsigned int nsec = stamp->GetNanosecond();
+    out.header.stamp.fromNSec(nsec);
 }
 
 void ros2oigtl::QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out)
@@ -101,7 +133,7 @@ void ros2oigtl::QTransToTransform(igtl::PositionMessage::Pointer in, geometry_ms
 
 void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out)
 {
-  //   out = igtl::PositionMessage::New();
+    //   out = igtl::PositionMessage::New();
 
     float position[3];
     float quaternion[4];
@@ -172,5 +204,5 @@ void ros2oigtl::MeshToMesh(const shape_msgs::Mesh::ConstPtr &in, igtl::PolyDataM
     out->SetDeviceName("SomeRosDevice");
 
 
-   // in->vertices
+    // in->vertices
 }

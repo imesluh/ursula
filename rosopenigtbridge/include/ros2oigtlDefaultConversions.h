@@ -14,6 +14,10 @@
 #include <igtlImageMetaMessage.h>
 #include <igtlPolyDataMessage.h>
 
+#include "tf/LinearMath/Quaternion.h"
+#include "tf/LinearMath/Matrix3x3.h"
+
+
 namespace ros2oigtl
 {
 

@@ -4,7 +4,7 @@ project(rosopenigtbridge)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+#find_package(catkin REQUIRED)
 
 ## System dependencies are found with CMake's conventions
  find_package(Boost REQUIRED COMPONENTS system)
@@ -12,13 +12,18 @@ find_package(catkin REQUIRED)
 find_package(OpenIGTLink REQUIRED)
 include(${OpenIGTLink_USE_FILE})
 
+
+
 find_package(catkin REQUIRED COMPONENTS
     std_msgs
     sensor_msgs
     image_transport
     roscpp
-    geometry_msgs)
-
+    geometry_msgs
+    cmake_modules
+    tf
+ )
+FIND_PACKAGE(Eigen REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -115,6 +120,7 @@ add_executable(ros2openigtlink src/ros2oigtlGenericConverter.cpp include/ros2oig
 add_executable(ros2oigtlPose src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlPose.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlImage src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlImage.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlMesh src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlMesh.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(oigtl2rosTransformation src/oigtl2rosGenericConverter.cpp include/oigtl2rosGenericConverter.h src/oigtl2rosTransformation.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -131,6 +137,12 @@ target_link_libraries(ros2oigtlPose
     OpenIGTLink
 )
 
+target_link_libraries(oigtl2rosTransformation
+   ${catkin_LIBRARIES}
+    OpenIGTLink
+)
+
+
 target_link_libraries(ros2oigtlImage
    ${catkin_LIBRARIES}
     OpenIGTLink
@@ -140,6 +152,8 @@ target_link_libraries(ros2oigtlMesh
    ${catkin_LIBRARIES}
     OpenIGTLink
 )
+
+
 
 #############
 ## Install ##
