@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include <string>
 #include <igtlClientSocket.h>
+#include <igtlServerSocket.h>
 
 namespace ros2oigtl
 {
@@ -20,7 +21,9 @@ protected:
 
     ros::NodeHandle mn;
     ros::Subscriber mSub;
-    igtl::ClientSocket::Pointer mSocket;
+    igtl::ClientSocket::Pointer m_ClientSocket;
+    igtl::ServerSocket::Pointer m_ServerSocket;
+    igtl::Socket::Pointer m_Socket;
 
 };
 } //namespace

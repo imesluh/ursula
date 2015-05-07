@@ -21,38 +21,87 @@ protected:
 PoseConverter::PoseConverter(std::string topicName)
 {
 
+    ROS_INFO("Subscribing topic ...");
     mSub = mn.subscribe(topicName, 100, &PoseConverter::Callback,  this);
-    mSocket = igtl::ClientSocket::New();
-    std::string server;
-    mn.getParam("OpenIGTLinkServerIP", server);
-    int r;
-    if(server.empty())
-        r = mSocket->ConnectToServer("127.0.0.1", 18944);
-    else
-        r = mSocket->ConnectToServer(server.c_str(), 18944);
-    if (r != 0)
+    
+    //    ROS_INFO("Contacting server ...");
+    //    mSocket = igtl::ClientSocket::New();
+    //    std::string server;
+    //    mn.getParam("OpenIGTLinkServerIP", server);
+    //    int r;
+    //    if(true || server.empty())
+    //        r = mSocket->ConnectToServer("172.31.1.1", 18944);
+    //    else
+    //        r = mSocket->ConnectToServer(server.c_str(), 18944);
+    //    if (r != 0)
+    //    {
+    //        //
+    //        // do error handling
+    //        //
+    //        ROS_ERROR("Can't connect to OpenIGT Port.");
+    //    }
+    //    else
+    //    {
+    //		ROS_INFO("Connect to server. Waiting for topic to transmit ...");
+    //	}
+    
+    ROS_INFO("Starting server ...");
+    m_ServerSocket= igtl::ServerSocket::New();
+    std::string port;
+    
+    int r = m_ServerSocket->CreateServer(18700);
+    
+    if (r < 0)
     {
-        //
-        // do error handling
-        //
-        ROS_ERROR("Can't connect to OpenIGT Port.");
+        ROS_ERROR("Can't Open OpenIGT Server Port.");
+    }
+    else
+    {
+        ROS_INFO("Opened server port.");
+
     }
 
+    // Waiting for Connection
+    m_Socket = m_ServerSocket->WaitForConnection(1000);
+    if (m_Socket.IsNotNull()) // if client connected
+    {
+        ROS_INFO("Socket established. Waiting for topics to send ...");
+    }
+
+    
 }
 
 PoseConverter::~PoseConverter()
 {
-    mSocket->CloseSocket();
+    m_Socket->CloseSocket();
 
 }
 
 void PoseConverter::Callback(const geometry_msgs::TransformStamped::ConstPtr& msg)
 {
-    ROS_INFO("Recieved Transformatipon");
+    ROS_INFO("Recieved Transformation");
+
+    if(m_Socket.IsNull())
+    {
+        ROS_WARN("Socket closed, trying to reopen it ...");
+        m_Socket = m_ServerSocket->WaitForConnection(1000);
+    }
+    if (m_Socket.IsNotNull()) // if client connected
+    {
+        ROS_INFO("Open.");
+    }
+    else
+    {
+        ROS_ERROR("Unable to open.");
+        return;
+    }
+
     igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
     ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg );
     oigtlPositionMsg->Pack();
-    mSocket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+    m_Socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+    ROS_INFO("Transformation is on the way.");
+
 
 }
 
@@ -72,8 +121,8 @@ int main(int argc, char **argv)
     PoseConverter pc(topicName);
     ros::AsyncSpinner spinner(1);
 
-   spinner.start();
-   ros::waitForShutdown();
+    spinner.start();
+    ros::waitForShutdown();
 
     return 0;
 }
