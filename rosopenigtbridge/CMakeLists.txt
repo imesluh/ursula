@@ -22,6 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
     geometry_msgs
     cmake_modules
     tf
+    kuka_rsi_driver
  )
 FIND_PACKAGE(Eigen REQUIRED)
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -96,6 +97,7 @@ catkin_package(
     geometry_msgs
     roscpp
     std_msgs
+    kuka_rsi_driver
   DEPENDS system_lib
 )
 

@@ -62,6 +62,44 @@ void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::Cons
 
 }
 
+void ros2oigtl::TransformToTransform(const std_msgs::Float64MultiArray &in, igtl::TransformMessage::Pointer out)
+{
+
+   if(in.data.size() < 16)
+       return;
+    out = igtl::TransformMessage::New();
+    igtl::Matrix4x4 m;
+
+    m[0][0] = in.data[0];
+    m[0][1] = in.data[1];
+    m[0][2] = in.data[2];
+    m[0][3] = in.data[3];
+
+    m[1][0] = in.data[4];
+    m[1][1] = in.data[5];
+    m[1][2] = in.data[6];
+    m[1][3] = in.data[7];
+
+    m[2][0] = in.data[8];
+    m[2][1] = in.data[9];
+    m[2][2] = in.data[10];
+    m[2][3] = in.data[11];
+
+    m[3][0] = in.data[12];
+    m[3][1] = in.data[13];
+    m[3][2] = in.data[14];
+    m[3][3] = in.data[15];
+
+    out->SetMatrix(m);
+
+
+    //Setup Header
+
+    //TODO
+    out->SetDeviceName("SomeRosDevice");
+
+}
+
 void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
     //Get data
@@ -70,14 +108,14 @@ void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometr
 
     igtl::Matrix4x4 m;
     in->GetMatrix(m);
-//    tf::Vector3 origin;
-//    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
+    //    tf::Vector3 origin;
+    //    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
 
 
     tf::Matrix3x3 tf3d;
     tf3d.setValue(static_cast<double>(m[0][0]), static_cast<double>(m[0][1]), static_cast<double>(m[0][2]),
-                  static_cast<double>(m[1][0]), static_cast<double>(m[1][1]), static_cast<double>(m[1][2]),
-                  static_cast<double>(m[2][0]), static_cast<double>(m[2][1]), static_cast<double>(m[2][2]));
+            static_cast<double>(m[1][0]), static_cast<double>(m[1][1]), static_cast<double>(m[1][2]),
+            static_cast<double>(m[2][0]), static_cast<double>(m[2][1]), static_cast<double>(m[2][2]));
 
     tf::Quaternion tfqt;
     tf3d.getRotation(tfqt);

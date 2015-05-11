@@ -23,28 +23,7 @@ PoseConverter::PoseConverter(std::string topicName)
 
     ROS_INFO("Subscribing topic ...");
     mSub = mn.subscribe(topicName, 100, &PoseConverter::Callback,  this);
-    
-    //    ROS_INFO("Contacting server ...");
-    //    mSocket = igtl::ClientSocket::New();
-    //    std::string server;
-    //    mn.getParam("OpenIGTLinkServerIP", server);
-    //    int r;
-    //    if(true || server.empty())
-    //        r = mSocket->ConnectToServer("172.31.1.1", 18944);
-    //    else
-    //        r = mSocket->ConnectToServer(server.c_str(), 18944);
-    //    if (r != 0)
-    //    {
-    //        //
-    //        // do error handling
-    //        //
-    //        ROS_ERROR("Can't connect to OpenIGT Port.");
-    //    }
-    //    else
-    //    {
-    //		ROS_INFO("Connect to server. Waiting for topic to transmit ...");
-    //	}
-    
+
     ROS_INFO("Starting server ...");
     m_ServerSocket= igtl::ServerSocket::New();
     std::string port;
