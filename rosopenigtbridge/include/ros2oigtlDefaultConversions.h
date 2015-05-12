@@ -7,6 +7,7 @@
 #include <sensor_msgs/Image.h>
 #include <shape_msgs/Mesh.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Float64MultiArray.h>
 
 //OpenIGT Link Types
 #include <igtlTransformMessage.h>
@@ -18,21 +19,29 @@
 #include "tf/LinearMath/Quaternion.h"
 #include "tf/LinearMath/Matrix3x3.h"
 
+//KUKA RSI DRIVER
+//#include "kuka_rsi_driver/ActualVal.h"
+//#include "kuka_rsi_driver/Axis.h"
+
 
 namespace ros2oigtl
 {
 
 
 //Transformations
-void TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, double scaling = 1.);
+void TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, std::string deviceName, double scaling = 1.);
 void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out);
 
 void TransformToVector3(igtl::TransformMessage::Pointer in, geometry_msgs::Vector3 &out);
 
+//Transformations
+void TransformToTransform(const std_msgs::Float64MultiArray &in, igtl::TransformMessage::Pointer out, std::string deviceName);
+void TransformToTransform(const geometry_msgs::TransformStamped &in, igtl::TransformMessage::Pointer out, std::string deviceName);
+
 //Pose & Quaternions
 
 void QTransToTransform(igtl::PositionMessage::Pointer in, geometry_msgs::TransformStamped &out);
-void TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out);
+void TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out, std::string deviceName);
 
 //Images ToDo
 

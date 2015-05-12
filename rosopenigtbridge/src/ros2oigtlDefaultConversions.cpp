@@ -3,7 +3,7 @@
 
 
 
-void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, double scaling)
+void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, std::string deviceName, double scaling)
 {
     //We need to transform geometrymsg (Quaternion+CenterPoint) to a 4x4-Matrix
 
@@ -57,10 +57,11 @@ void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::Cons
     stamp->SetTime((double)(in->header.stamp.toNSec()));
     out->SetTimeStamp(stamp);
     //TODO
-    out->SetDeviceName("SomeRosDevice");
+    out->SetDeviceName(deviceName.c_str());
 
 
 }
+
 
 void ros2oigtl::TransformToVector3(igtl::TransformMessage::Pointer in, geometry_msgs::Vector3 &out)
 {
@@ -72,9 +73,37 @@ void ros2oigtl::TransformToVector3(igtl::TransformMessage::Pointer in, geometry_
     out.x = m[0][3]/1000.;
     out.y = m[1][3]/1000.;
     out.z = m[2][3]/1000.;
+}
+
+void ros2oigtl::TransformToTransform(const std_msgs::Float64MultiArray &in, igtl::TransformMessage::Pointer out, std::string deviceName)
 
 
-    //Setup Header
+    if(in.data.size() < 16)
+        return;
+    out = igtl::TransformMessage::New();
+    igtl::Matrix4x4 m;
+
+    m[0][0] = in.data[0];
+    m[0][1] = in.data[1];
+    m[0][2] = in.data[2];
+    m[0][3] = in.data[3];
+
+    m[1][0] = in.data[4];
+    m[1][1] = in.data[5];
+    m[1][2] = in.data[6];
+    m[1][3] = in.data[7];
+
+    m[2][0] = in.data[8];
+    m[2][1] = in.data[9];
+    m[2][2] = in.data[10];
+    m[2][3] = in.data[11];
+
+    m[3][0] = in.data[12];
+    m[3][1] = in.data[13];
+    m[3][2] = in.data[14];
+    m[3][3] = in.data[15];
+
+    out->SetMatrix(m);
 
 //    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
 //    in->GetTimeStamp(stamp);
@@ -92,14 +121,14 @@ void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometr
 
     igtl::Matrix4x4 m;
     in->GetMatrix(m);
-//    tf::Vector3 origin;
-//    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
+    //    tf::Vector3 origin;
+    //    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
 
 
     tf::Matrix3x3 tf3d;
     tf3d.setValue(static_cast<double>(m[0][0]), static_cast<double>(m[0][1]), static_cast<double>(m[0][2]),
-                  static_cast<double>(m[1][0]), static_cast<double>(m[1][1]), static_cast<double>(m[1][2]),
-                  static_cast<double>(m[2][0]), static_cast<double>(m[2][1]), static_cast<double>(m[2][2]));
+            static_cast<double>(m[1][0]), static_cast<double>(m[1][1]), static_cast<double>(m[1][2]),
+            static_cast<double>(m[2][0]), static_cast<double>(m[2][1]), static_cast<double>(m[2][2]));
 
     tf::Quaternion tfqt;
     tf3d.getRotation(tfqt);
@@ -153,7 +182,50 @@ void ros2oigtl::QTransToTransform(igtl::PositionMessage::Pointer in, geometry_ms
 
 }
 
-void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out)
+void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped &in, igtl::TransformMessage::Pointer out, std::string deviceName)
+{
+    tf::Quaternion quat;
+    quat.setX((tfScalar)in.transform.rotation.x);
+    quat.setY((tfScalar)in.transform.rotation.y);
+    quat.setZ((tfScalar)in.transform.rotation.z);
+    quat.setW((tfScalar)in.transform.rotation.w);
+
+
+
+    tf::Matrix3x3 rotation(quat);
+    out = igtl::TransformMessage::New();
+    igtl::Matrix4x4 m;
+    //Set Rotation#
+    for(int z = 0; z <3; z++)
+    {
+        for(int s = 0; s < 3;s++)
+        {
+            m[z][s] = rotation[z][s];
+
+        }
+    }
+
+
+    //Set translation & Scaling
+    m[3][3] = 1;
+
+    m[0][3] = in.transform.translation.x;
+    m[1][3] = in.transform.translation.y;
+    m[2][3] = in.transform.translation.z;
+
+    out->SetMatrix(m);
+    //Setup Header
+    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+    stamp->SetTime((double)(in.header.stamp.toNSec()));
+    out->SetTimeStamp(stamp);
+    //TODO
+    out->SetDeviceName(deviceName.c_str());
+
+
+
+}
+
+void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::PositionMessage::Pointer out, std::string deviceName)
 {
     //   out = igtl::PositionMessage::New();
 
@@ -177,7 +249,7 @@ void ros2oigtl::TransformToQTrans(const geometry_msgs::TransformStamped::ConstPt
     stamp->SetTime((double)(in->header.stamp.toNSec()));
     out->SetTimeStamp(stamp);
     //TODO
-    out->SetDeviceName("SomeRosDevice");
+    out->SetDeviceName(deviceName.c_str());
 
 }
 
