@@ -3,6 +3,7 @@
 
 //ROS Types
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Vector3Stamped.h>
 #include <sensor_msgs/Image.h>
 #include <shape_msgs/Mesh.h>
 #include <std_msgs/Bool.h>
@@ -25,6 +26,8 @@ namespace ros2oigtl
 //Transformations
 void TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, double scaling = 1.);
 void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out);
+
+void TransformToVector3(igtl::TransformMessage::Pointer in, geometry_msgs::Vector3 &out);
 
 //Pose & Quaternions
 

@@ -121,6 +121,7 @@ add_executable(ros2oigtlPose src/ros2oigtlGenericConverter.cpp include/ros2oigtl
 add_executable(ros2oigtlImage src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlImage.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlMesh src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlMesh.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(oigtl2rosTransformation src/oigtl2rosGenericConverter.cpp include/oigtl2rosGenericConverter.h src/oigtl2rosTransformation.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(oigtl2rosPivot src/oigtl2rosGenericConverter.cpp include/oigtl2rosGenericConverter.h src/oigtl2rosPivot.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
@@ -141,6 +142,12 @@ target_link_libraries(oigtl2rosTransformation
    ${catkin_LIBRARIES}
     OpenIGTLink
 )
+
+target_link_libraries(oigtl2rosPivot
+   ${catkin_LIBRARIES}
+    OpenIGTLink
+)
+
 
 
 target_link_libraries(ros2oigtlImage

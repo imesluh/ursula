@@ -62,6 +62,28 @@ void ros2oigtl::TransformToTransform(const geometry_msgs::TransformStamped::Cons
 
 }
 
+void ros2oigtl::TransformToVector3(igtl::TransformMessage::Pointer in, geometry_msgs::Vector3 &out)
+{
+    igtl::Matrix4x4 m;
+    in->GetMatrix(m);
+//    tf::Vector3 origin;
+//    origin.setValue(static_cast<double>(m[0][3]),static_cast<double>(m[1][3]),static_cast<double>(m[2][3]));
+
+    out.x = m[0][3]/1000.;
+    out.y = m[1][3]/1000.;
+    out.z = m[2][3]/1000.;
+
+
+    //Setup Header
+
+//    igtl::TimeStamp::Pointer stamp = igtl::TimeStamp::New();
+//    in->GetTimeStamp(stamp);
+
+//    unsigned int nsec = stamp->GetNanosecond();
+//    out.header.stamp.fromNSec(nsec);
+}
+
+
 void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out)
 {
     //Get data
@@ -82,9 +104,9 @@ void ros2oigtl::TransformToTransform(igtl::TransformMessage::Pointer in, geometr
     tf::Quaternion tfqt;
     tf3d.getRotation(tfqt);
 
-    out.transform.translation.x = m[0][3];
-    out.transform.translation.y = m[1][3];
-    out.transform.translation.z = m[2][3];
+    out.transform.translation.x = m[0][3]/1000.;
+    out.transform.translation.y = m[1][3]/1000.;
+    out.transform.translation.z = m[2][3]/1000.;
 
     out.transform.rotation.x = tfqt.getX();
     out.transform.rotation.y = tfqt.getY();
