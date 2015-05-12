@@ -1,0 +1,7 @@
+
+
+<!-- Add all transfer topics here -->
+
+<node name="ros2oigtlPose" pkg="rosopenigtbridge" type="ros2oigtlPose" args="flange_setpoint" respawn="true"/>
+<node name="oigtl2rosTransform" pkg="rosopenigtbridge" type="oigtl2rosTransform" args="flange_actual" respawn="true"/>
+ 
