@@ -6,11 +6,11 @@
 #include "ros2oigtlGenericConverter.h"
 //
 
-class PoseConverter : public ros2oigtl::GenericConverter
+class TransformationConverter : public ros2oigtl::GenericConverter
 {
 public:
-    PoseConverter(std::string topicName, int portNumb, std::string deviceName );
-    ~PoseConverter();
+    TransformationConverter(std::string topicName, int portNumb, std::string deviceName );
+    ~TransformationConverter();
 
 protected:
 
@@ -19,12 +19,12 @@ protected:
 
 };
 
-PoseConverter::PoseConverter(std::string topicName, int portNumb, std::string deviceName)
+TransformationConverter::TransformationConverter(std::string topicName, int portNumb, std::string deviceName)
 {
 
     m_DeviceName = deviceName;
     ROS_INFO("Subscribing topic ...");
-    mSub = mn.subscribe(topicName, 100, &PoseConverter::Callback,  this);
+    mSub = mn.subscribe(topicName, 100, &TransformationConverter::Callback,  this);
 
     ROS_INFO("Starting server ...");
     m_ServerSocket= igtl::ServerSocket::New();
@@ -52,13 +52,13 @@ PoseConverter::PoseConverter(std::string topicName, int portNumb, std::string de
     
 }
 
-PoseConverter::~PoseConverter()
+TransformationConverter::~TransformationConverter()
 {
     m_Socket->CloseSocket();
 
 }
 
-void PoseConverter::Callback(const geometry_msgs::TransformStamped::ConstPtr& msg)
+void TransformationConverter::Callback(const geometry_msgs::TransformStamped::ConstPtr& msg)
 {
     ROS_INFO("Recieved Transformation");
 
@@ -77,10 +77,10 @@ void PoseConverter::Callback(const geometry_msgs::TransformStamped::ConstPtr& ms
         return;
     }
 
-    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
-    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg, m_DeviceName );
-    oigtlPositionMsg->Pack();
-    m_Socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+    igtl::TransformMessage::Pointer oigtlTransformMsg = igtl::TransformMessage::New();
+    ros2oigtl::TransformToTransform(msg, oigtlTransformMsg, m_DeviceName );
+    oigtlTransformMsg->Pack();
+    m_Socket->Send(oigtlTransformMsg->GetPackPointer(), oigtlTransformMsg->GetPackSize());
     ROS_INFO("Transformation is on the way.");
 
 
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     int portNumb = atoi(argv[2]);
     std::string deviceName = argv[3];
 
-    PoseConverter pc(topicName, portNumb, deviceName);
+    TransformationConverter pc(topicName, portNumb, deviceName);
     ros::AsyncSpinner spinner(1);
 
     spinner.start();

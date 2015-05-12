@@ -7,35 +7,35 @@
 
 void transformCallback(const geometry_msgs::TransformStamped::ConstPtr& msg)
 {
-    ros::NodeHandle nLocal;
+//    ros::NodeHandle nLocal;
 
-    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
-    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg );
+//    igtl::PositionMessage::Pointer oigtlPositionMsg = igtl::PositionMessage::New();
+//    ros2oigtl::TransformToQTrans(msg, oigtlPositionMsg, );
 
 
-    ROS_INFO("Recieved Transformatipon");
-    //send message
-    igtl::ClientSocket::Pointer socket;
-    socket = igtl::ClientSocket::New();
-    std::string server;
-    nLocal.getParam("OpenIGTLinkServerIP", server);
-    int r;
-    if(server.empty())
-        r = socket->ConnectToServer("127.0.0.1", 18944);
-    else
-        r = socket->ConnectToServer(server.c_str(), 18944);
+//    ROS_INFO("Recieved Transformatipon");
+//    //send message
+//    igtl::ClientSocket::Pointer socket;
+//    socket = igtl::ClientSocket::New();
+//    std::string server;
+//    nLocal.getParam("OpenIGTLinkServerIP", server);
+//    int r;
+//    if(server.empty())
+//        r = socket->ConnectToServer("127.0.0.1", 18944);
+//    else
+//        r = socket->ConnectToServer(server.c_str(), 18944);
 
-    if (r != 0)
-    {
-        //
-        // do error handling
-        //
-        ROS_ERROR("Can't connect to OpenIGT Port.");
-    }
+//    if (r != 0)
+//    {
+//        //
+//        // do error handling
+//        //
+//        ROS_ERROR("Can't connect to OpenIGT Port.");
+//    }
 
-    oigtlPositionMsg->Pack();
+//    oigtlPositionMsg->Pack();
 
-    socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
+//    socket->Send(oigtlPositionMsg->GetPackPointer(), oigtlPositionMsg->GetPackSize());
 
 }
 

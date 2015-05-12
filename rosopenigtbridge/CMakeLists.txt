@@ -120,6 +120,7 @@ include_directories(
 ## Declare a cpp executable
 add_executable(ros2openigtlink src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2openigtlink.cpp include/ros2oigtlbridge.h src/ros2oigtlbridge.hxx include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlPose src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlPose.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
+add_executable(ros2oigtlTransformation src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlTransformation.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlImage src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlImage.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(ros2oigtlMesh src/ros2oigtlGenericConverter.cpp include/ros2oigtlGenericConverter.h src/ros2oigtlMesh.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
 add_executable(oigtl2rosTransformation src/oigtl2rosGenericConverter.cpp include/oigtl2rosGenericConverter.h src/oigtl2rosTransformation.cpp include/ros2oigtlDefaultConversions.h src/ros2oigtlDefaultConversions.cpp)
@@ -135,6 +136,11 @@ add_executable(oigtl2rosTransformation src/oigtl2rosGenericConverter.cpp include
 )
 
 target_link_libraries(ros2oigtlPose
+   ${catkin_LIBRARIES}
+    OpenIGTLink
+)
+
+target_link_libraries(ros2oigtlTransformation
    ${catkin_LIBRARIES}
     OpenIGTLink
 )
