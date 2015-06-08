@@ -30,6 +30,8 @@ namespace ros2oigtl
 
 //Transformations
 void TransformToTransform(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, std::string deviceName, double scaling = 1.);
+void TransformToTransform2(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, std::string deviceName, double scaling = 1.);
+//void TransformToTransform2(const geometry_msgs::TransformStamped::ConstPtr &in, igtl::TransformMessage::Pointer out, std::string deviceName, double scaling = 1.);
 void TransformToTransform(igtl::TransformMessage::Pointer in, geometry_msgs::TransformStamped &out);
 
 void TransformToVector3(igtl::TransformMessage::Pointer in, geometry_msgs::Vector3 &out);

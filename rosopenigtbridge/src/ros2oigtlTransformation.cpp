@@ -78,8 +78,10 @@ void TransformationConverter::Callback(const geometry_msgs::TransformStamped::Co
     }
 
     igtl::TransformMessage::Pointer oigtlTransformMsg = igtl::TransformMessage::New();
-    ros2oigtl::TransformToTransform(msg, oigtlTransformMsg, m_DeviceName );
+    ros2oigtl::TransformToTransform2(msg, oigtlTransformMsg, m_DeviceName );
     oigtlTransformMsg->Pack();
+
+    ROS_INFO(oigtlTransformMsg->GetDeviceName());
     m_Socket->Send(oigtlTransformMsg->GetPackPointer(), oigtlTransformMsg->GetPackSize());
     ROS_INFO("Transformation is on the way.");
 
@@ -90,7 +92,7 @@ void TransformationConverter::Callback(const geometry_msgs::TransformStamped::Co
 
 int main(int argc, char **argv)
 {
-    if (argc != 4) // check number of arguments
+    if (argc < 4) // check number of arguments
     {
         // If not correct, print usage
         std::cerr << "Usage: " << argv[0] << " <TopicName> <PORT> <DeviceName>"  << std::endl;

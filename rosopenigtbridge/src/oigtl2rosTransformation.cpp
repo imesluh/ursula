@@ -108,6 +108,8 @@ TransformationConverter::TransformationConverter(std::string topicName)
                 // Check data type and receive data body
                 if (strcmp(headerMsg->GetDeviceType(), "TRANSFORM") == 0)
                 {
+
+                    ROS_INFO("Transform recieved.");
                     igtl::TransformMessage::Pointer transMsg;
                     transMsg = igtl::TransformMessage::New();
                     ReceiveTransform(socket, headerMsg, transMsg);
@@ -146,14 +148,14 @@ void TransformationConverter::PublishMessage(igtl::TransformMessage *transMsg)
     geometry_msgs::TransformStamped out;
     ros2oigtl::TransformToTransform(transMsg, out);
 
-    mPub.publish(out);
+     mPub.publish(out);
 }
 
 
 
 int main(int argc, char **argv)
 {
-    if (argc != 2) // check number of arguments
+    if (argc < 2) // check number of arguments
     {
         // If not correct, print usage
         std::cerr << "Usage: " << argv[0] << " <TopicName>"    << std::endl;
