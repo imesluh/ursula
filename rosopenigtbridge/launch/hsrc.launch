@@ -12,13 +12,18 @@
     <arg name="DeviceName2" value="T_010" />
     <node name="ros2oigtlTransformationJ2" pkg="rosopenigtbridge" type="ros2oigtlTransformation" args="$(arg Topic2) $(arg Port2) $(arg DeviceName2)" respawn="true" output="screen"/>
 
-    <arg name="Topic3" value="flange_setpoint" />
-    <arg name="Port3" value="18700" />
-    <arg name="DeviceName3" value="T_EE_CMD" />
-    <node name="ros2oigtlTransformationFlange" pkg="rosopenigtbridge" type="ros2oigtlTransformation" args="$(arg Topic3) $(arg Port3) $(arg DeviceName3)" respawn="true" output="screen"/>
+    <arg name="Topic3" value="T_0_11" />
+    <arg name="Port3" value="18680" />
+    <arg name="DeviceName3" value="T_011" />
+    <node name="ros2oigtlTransformationJ3" pkg="rosopenigtbridge" type="ros2oigtlTransformation" args="$(arg Topic3) $(arg Port3) $(arg DeviceName3)" respawn="true" output="screen"/>
 
-    <arg name="Topic4" value="flange_actual" />
-    <!-- node name="oigtl2rosTransformation" pkg="rosopenigtbridge" type="oigtl2rosTransformation" args="$(arg Topic4)" respawn="true" output="screen"/ -->
+    <arg name="Topic4" value="flange_setpoint" />
+    <arg name="Port4" value="18700" />
+    <arg name="DeviceName4" value="T_EE_CMD" />
+    <node name="ros2oigtlTransformationFlange" pkg="rosopenigtbridge" type="ros2oigtlTransformation" args="$(arg Topic4) $(arg Port4) $(arg DeviceName4)" respawn="true" output="screen"/>
+
+    <arg name="Topic5" value="flange_actual" />
+    <node name="oigtl2rosTransformation" pkg="rosopenigtbridge" type="oigtl2rosTransformation" args="$(arg Topic5)" respawn="true" output="screen"/>
 
 
     <node name="oigtl2rosPivot" pkg="rosopenigtbridge" type="oigtl2rosPivot" respawn="true"/>
