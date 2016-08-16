@@ -1,0 +1,14 @@
+During the Surgical Robot Challenge 2015 at the Hamlyn Centre, London, UK, the Institute of Mechatronic Systems of the Leibniz Universität Hannover, Germany presented URSULA (Universal Research System for varioUs LAparoscopic interventions) as fusion of their research and development results. URSULA is a prototype that demonstrates the advantages of combining image-guidance with tele-operation and hands-on robotics, while using and providing open source software that will easily allow other research groups to re-implement such surgical robot systems. Our existing prototype URSULA is running with an exemplary implementation for surgical robot software which is mostly open source. Hardware components need to be acquired separately, especially the iiwa, surgical instruments and endoscopes. Actually, URSULA’s modular system architecture consists of the following proprietary (†) and open source (◊) soft- and hardware components:
+•	KUKA iiwa (robot and controller) †
+•	State machine / high level robot interface for the iiwa ◊
+•	Extension of 3D Slicer as part of an user interface for the iiwa ◊
+•	ROS interface for 3D Slicer and iiwa ◊
+•	ROS-based tele-operation with a 3D mouse ◊
+•	ROS-based tele-operation with a camera and marker/finger tracking ◊
+•	Motorized laparoscopic tool with embedded PC †
+•	ROS-based motor control of the laparoscopic tool ◊
+•	ROS interface for 3D-Slicer to send point cloud data ◊
+•	Stereo endoscope with 3D reconstruction capabilities †
+•	A laparoscopic phantom †
+
+In the following weeks this repository will be filled with the open source software.
