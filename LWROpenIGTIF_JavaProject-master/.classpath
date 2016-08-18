@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="SWIG/" kind="src" path="Libs"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="Libs/Jama-1.0.2.jar"/>
+	<classpathentry kind="lib" path="Libs/nrsdk-3.8.8-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="Libs/nrsdk-3.9.1-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="Libs/KUKA/roboticsAPI.directServo.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/LWROpenIGTIF/Libs/KUKA/roboticsAPI.directServo-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Libs/KUKA/roboticsAPI.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/LWROpenIGTIF/Libs/KUKA/roboticsAPI-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Libs/KUKA/roboticsAPI.realtimePtp.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/LWROpenIGTIF/Libs/KUKA/roboticsAPI.realtimePtp-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Libs/KUKA/roboticsAPI.smartServo.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/LWROpenIGTIF/Libs/KUKA/roboticsAPI.smartServo-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Libs/KUKA/common.utilities.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/LWROpenIGTIF/Libs/KUKA/common.utilities-javadoc.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="Libs/SWIG/SWIG_Communication.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
